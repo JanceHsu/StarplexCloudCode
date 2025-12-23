@@ -8,6 +8,23 @@
   </head>
   <script>
     document.documentElement.style.fontSize = 8 + 'px';
+    // 检测深色模式并动态适配
+    function applyDarkMode(dark) {
+      if (dark) {
+        document.body.classList.add('dark-mode');
+      } else {
+        document.body.classList.remove('dark-mode');
+      }
+    }
+    // 初始检测
+    const isDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+    applyDarkMode(isDark);
+    // 监听系统主题变化
+    if (window.matchMedia) {
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
+        applyDarkMode(e.matches);
+      });
+    }
   </script>
   <body>
     <div id="icon">
@@ -221,6 +238,8 @@
     max-width: 860px;
     margin: auto;
     padding: 2rem 2rem 5rem 2rem;
+    background-color: #fff;
+    transition: background 0.3s, color 0.3s;
   }
   ul {
     padding: 0;
@@ -246,9 +265,9 @@
   }
   #update-time {
     text-align: center;
-    span {
-      font-size: 14px;
-    }
+  }
+  #update-time span {
+    font-size: 14px;
   }
   .font-secondary {
     color: rgba(0, 0, 0, 0.6);
@@ -265,16 +284,20 @@
     word-break: break-all;
     line-height: 1.4;
   }
-  @media (prefers-color-scheme: dark) {
-    body {
-      background-color: #000000;
-    }
-    .font-secondary {
-      color: rgba(255, 255, 255, 0.6);
-    }
-    .icon-emphasize {
-      color: rgba(82, 145, 255, 1);
-    }
+  /* 深色模式适配 */
+  body.dark-mode {
+    background-color: #000;
+    color: #fff;
+  }
+  body.dark-mode * {
+    color: #fff !important;
+    border-color: #333;
+  }
+  body.dark-mode .font-secondary {
+    color: rgba(255, 255, 255, 0.6) !important;
+  }
+  body.dark-mode .icon-emphasize {
+    color: rgba(82, 145, 255, 1) !important;
   }
 </style>
 <style id="style"></style>
